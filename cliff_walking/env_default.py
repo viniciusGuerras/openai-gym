@@ -1,9 +1,9 @@
 import numpy as np
 import gymnasium as gym
 
-env = gym.make("CliffWalking-v0", render_mode="rgb_array")
+env = gym.make("CliffWalking-v0", render_mode="human")
 
-q_table = np.zeros((env.observation_space.n, env.action_space.n))
+q_table = np.load("cliff_walking/q_table/cliffwalking_q_table.npy")
 
 episodes = 1000
 epsilon = 1
@@ -17,10 +17,7 @@ for i in range(episodes):
     terminated, truncated = False, False
     score = 0
     while not terminated and not truncated:
-        if np.random.random() < epsilon:
-            action = env.action_space.sample()
-        else:
-            action = np.argmax(q_table[state])
+        action = np.argmax(q_table[state])
 
         state_, reward, terminated, truncated, _ = env.step(action)
 
